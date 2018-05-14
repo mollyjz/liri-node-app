@@ -4,22 +4,12 @@ require("dotenv").config();
 var keys = require("keys.js");
 var Twitter = require("twitter");
 //var Spotify = require("node-spotify.api");
-
+//var omdbReq = require("omdb");
 var client = new Twitter(keys.twitter);
 //console.log(client) //works
 //var spotifyKeys = new Spotify(keys.spotify);
 
-
-
-//var omdbReq = require("omdb");
-
-
-
-
-
 //var tweetUrl = "https://api.twitter.com/1.1/statuses/user_timeline.json";
-
-
 /* tweetUrl += $.param({
     screen_name: "mjz_test",
     count: 10
@@ -42,12 +32,17 @@ var params = {
 client.get("statuses/user_timeline", params, getTweets)
 
 function getTweets(err, data, response) {
-    for (var i = 0; i<10; i++) {
-        console.log("hi")
-        console.log(data) //"could not authenticate you"????????????
-        console.log("heyyyy")
-        var tweetRaw = results.results.text; //results not defined
-        var tweet = json.Stringify(tweetRaw);
-        console.log(tweet)
+    for (var i = 0; i<data.length; i++) {
+        //console.log("hi")
+        //console.log(data)
+        //console.log("heyyyy")
+        //var tweetRawArray = data;
+        console.log(data[i].text)
+        console.log(data[i].created_at)
+        var tweet = JSON.stringify(data[i]);
+        //console.log(tweet)
+        //console.log(response)
+        //console.log(data[0])
+        //console.log(tweetRaw)
     }
 }
