@@ -11,7 +11,7 @@ var omdbReq = require("omdb");
 var client = new Twitter(keys.twitter);
 var spotify = new Spotify(keys.spotify);
 
-console.log(spotify) //NOTHING
+//console.log(keys.spotify) //works
 
 var twitterParams = {
     screen_name: "mjz_test",
@@ -35,7 +35,7 @@ params = params.trim();
 //console.log(params)
 
 function songSearch() {
-    Spotify.search({ //////////////?????????????????
+    spotify.search({ //////////////?????????????????
         type: 'track',
         query: params
     }).then (function(data) {
