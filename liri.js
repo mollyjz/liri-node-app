@@ -21,31 +21,34 @@ var twitterParams = {
 client.get("statuses/user_timeline", twitterParams, getTweets)
 
 function getTweets(err, data, response) {
-    for (var i = 0; i<20; i++) {
-        console.log(data[i].text);
+    for (var i = 0; i<data.length; i++) { //CHANGE TO 20!!!!
+        //console.log(data); //works
+        console.log(data[i].text); //undefined? just because i only have 2 tweets?????
         console.log(data[i].created_at);
-        var tweet = JSON.stringify(data[i]);
+        //var tweet = JSON.stringify(data[i]); //is this necessary?????
     }
 }
 
+//SWITCH STATEMENTS SO THAT IT ONLY PROVIDES RESULTS FOR THE API YOU WANT!!!!!!!!!!!!!!
+
 //for spotify
-var params = process.argv[3] + " " + process.argv[4] + " " + process.argv[5] + " " + process.argv[6] + " " + process.argv[7] + " " + process.argv[8] + " " + process.argv[9];
-params = params.trim();
+//var params = "hello";
 
 //console.log(params)
 
 function songSearch() {
-    spotify.search({ //////////////?????????????????
+    spotify.search({
         type: 'track',
-        query: params
+        query: process.argv[3]
     }).then (function(data) {
-        console.log(data);
-        console.log(data.tracks.items[0]);
+        console.log(data.tracks);
         var songInfo = data.tracks.items[0];
         var artist = songInfo.artists[0].name;
         var songName = songInfo.name;
         var album = songInfo.album.name;
         var preview = songInfo.preview_url;
+        console.log("Artist: " + artist + "\n" + "Song: " + songName + "\n" + "Album: " + album + "\n" + "Song Preview: " + preview)
+        debugger;
     })      
 };
 
