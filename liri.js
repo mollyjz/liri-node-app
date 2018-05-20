@@ -5,7 +5,8 @@ var keys = require("keys.js");
 
 var Twitter = require("twitter");
 var Spotify = require("node-spotify-api");
-var omdbReq = require("omdb");
+var omdb = require("omdb");
+var Request = require("request");
 
 //KEYS
 var client = new Twitter(keys.twitter);
@@ -41,7 +42,6 @@ function songSearch() {
         type: 'track',
         query: process.argv[3]
     }).then (function(data) {
-        console.log(data.tracks);
         var songInfo = data.tracks.items[0];
         var artist = songInfo.artists[0].name;
         var songName = songInfo.name;
@@ -55,20 +55,12 @@ function songSearch() {
 songSearch();
 
 
-/*
-function songRequest() {
-    Spotify.request("https://api.spotify.com/v1/tracks")
-    .then(function(response) {
-        console.log(response);
-        console.log(data.tracks.items[0]);
+
+function movieSearch() {
+    var terms = process.argv[3];
+    omdb.search(terms, function(terms, movie) {
+        console.log('%s (%d)', movie.title, movie.year);
     });
-};
-*/
+}
 
-//songRequest();
-
-//request('https://api.spotify.com/v1/tracks/7yCPwWs66K8Ba5lFuU2bcx'
-//{
-//    type: 'track',
-//    query: 'All the Small Things'
-//search: function({ type: 'artist OR album OR track', query: 'My search query', limit: 20 }, callback);
+movieSearch();
