@@ -22,7 +22,6 @@ var twitterParams = {
     count: 10
 };
 
-
 function getTweets(err, data, response) {
     for (var i = 0; i<data.length; i++) { //CHANGE TO 20!!!!
         //console.log(data); //works
@@ -89,9 +88,7 @@ function doWhatItSays() { //take text from txt file to determine which function 
         }
         else if (fsCommand == "spotify-this-song") {
             songSearch({ type: 'track', query: textArray[1] });
-//            songSearch(JSON.parse(textArray[1])); ////////////////////////
-        }
-        else if (fsCommand == "my-tweets") {
+        } else if (fsCommand == "my-tweets") {
             client.get("statuses/user_timeline", twitterParams, getTweets);
         }
     });
@@ -99,7 +96,6 @@ function doWhatItSays() { //take text from txt file to determine which function 
 
 
 //////////////////////////////////// IF STATEMENTS /////////////////////////////////////////
-
 
 if (command == "my-tweets") {
     client.get("statuses/user_timeline", twitterParams, getTweets);
@@ -110,5 +106,3 @@ if (command == "my-tweets") {
 } else if (command == "do-what-it-says") {
     doWhatItSays();
 }
-
-//SWITCH STATEMENTS SO THAT IT ONLY PROVIDES RESULTS FOR THE API YOU WANT!!!!!!!!!!!!!!
