@@ -32,10 +32,6 @@ function getTweets(err, data, response) {
 
 //SWITCH STATEMENTS SO THAT IT ONLY PROVIDES RESULTS FOR THE API YOU WANT!!!!!!!!!!!!!!
 
-//for spotify
-//var params = "hello";
-
-//console.log(params)
 
 function songSearch() {
     spotify.search({
@@ -48,19 +44,33 @@ function songSearch() {
         var album = songInfo.album.name;
         var preview = songInfo.preview_url;
         console.log("Artist: " + artist + "\n" + "Song: " + songName + "\n" + "Album: " + album + "\n" + "Song Preview: " + preview)
-        debugger;
     })      
 };
 
 songSearch();
 
+//////////////////////////////////////////////////////////////////////////////////////
 
-
-function movieSearch() {
-    var terms = process.argv[3];
-    omdb.search(terms, function(terms, movie) {
-        console.log('%s (%d)', movie.title, movie.year);
-    });
+function movieSearch(movie) {
+    var movie = process.argv[3];
+    var key = "trilogy";
+    if (movie == undefined) {
+        movie = "Mr Nobody"
+    }
+    queryURL = "http://www.omdbapi.com/" + "?" + "apikey=" + key + "&t=" + movie + "&plot=short&tomatoes=true&r=json";
+	Request(queryURL, function(error, response, body) {
+        var data = JSON.parse(body);
+        console.log("Title: " + data.Title);
+        console.log("Year: " + data.Year);
+        console.log("IMDB Rating: " + data.imdbRating);
+        console.log("Rotten Tomatoes Rating: " + data.tomatoRating);
+        console.log("Country: " + data.Country);
+        console.log("Language: " + data.Language);
+        console.log("Plot: " + data.Plot);
+        console.log("Cast: " + data.Actors);
+    })         
 }
-
 movieSearch();
+
+////////////////////////////////////////////////////////////////////////////////
+
