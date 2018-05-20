@@ -1,8 +1,10 @@
-// still need to do node install for this!
+var command = process.argv[2];
+var userSearch = process.argv[3];
 
+//CALLS
 require("dotenv").config();
 var keys = require("keys.js");
-
+var fs = require("fs");
 var Twitter = require("twitter");
 var Spotify = require("node-spotify-api");
 var omdb = require("omdb");
@@ -12,28 +14,28 @@ var Request = require("request");
 var client = new Twitter(keys.twitter);
 var spotify = new Spotify(keys.spotify);
 
-//console.log(keys.spotify) //works
+
+///////////////////////////////// TWITTER ////////////////////////////////////////
 
 var twitterParams = {
     screen_name: "mjz_test",
     count: 10
 };
 
-client.get("statuses/user_timeline", twitterParams, getTweets)
 
 function getTweets(err, data, response) {
     for (var i = 0; i<data.length; i++) { //CHANGE TO 20!!!!
         //console.log(data); //works
-        console.log(data[i].text); //undefined? just because i only have 2 tweets?????
+        console.log(data[i].text);
         console.log(data[i].created_at);
         //var tweet = JSON.stringify(data[i]); //is this necessary?????
     }
 }
 
-//SWITCH STATEMENTS SO THAT IT ONLY PROVIDES RESULTS FOR THE API YOU WANT!!!!!!!!!!!!!!
 
+///////////////////////////////// SPOTIFY //////////////////////////////////////
 
-function songSearch() {
+function songSearch(type, query) {
     spotify.search({
         type: 'track',
         query: process.argv[3]
@@ -47,9 +49,8 @@ function songSearch() {
     })      
 };
 
-songSearch();
 
-//////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////// OMDB //////////////////////////////////////
 
 function movieSearch(movie) {
     var movie = process.argv[3];
@@ -70,7 +71,42 @@ function movieSearch(movie) {
         console.log("Cast: " + data.Actors);
     })         
 }
-movieSearch();
 
-////////////////////////////////////////////////////////////////////////////////
 
+//////////////////////////////////// FS /////////////////////////////////////////
+
+
+//client.get("statuses/user_timeline", twitterParams, getTweets)
+
+function doWhatItSays() { //take text from txt file to determine which function to run
+    fs.readFile("random.txt", "utf8", function(error, data) {
+        var textArray = data.split(",");
+        var fsCommand = textArray[0];
+        var searchTerm = textArray[1]; //json parse??
+        //console.log(fsCommand); //works
+        if (fsCommand == "movie-this") {
+            movieSearch(searchTerm);
+        }
+        else if (fsCommand == "spotify-this-song") {
+            songSearch('track', searchTerm);
+        }
+        else if (fsCommand == "my-tweets") {
+            client.get("statuses/user_timeline", twitterParams, getTweets);
+        }
+    });
+}
+
+
+//////////////////////////////////// IF STATEMENTS /////////////////////////////////////////
+
+if (command == "do-what-it-says") {
+    doWhatItSays();
+} else if (command == "my-tweets") {
+    client.get("statuses/user_timeline", twitterParams, getTweets);
+} else if (command == "movie-this") {
+    movieSearch(userSearch);
+} else if (command == "spotify-this-song") {
+    songSearch('track', userSearch)
+}
+
+//SWITCH STATEMENTS SO THAT IT ONLY PROVIDES RESULTS FOR THE API YOU WANT!!!!!!!!!!!!!!
