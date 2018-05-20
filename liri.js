@@ -35,10 +35,13 @@ function getTweets(err, data, response) {
 
 ///////////////////////////////// SPOTIFY //////////////////////////////////////
 
-function songSearch(type, query) {
+function songSearch(song) {
+    if (song == undefined) {
+        song = "The Sign"
+    };
     spotify.search({
         type: 'track',
-        query: process.argv[3]
+        query: song
     }).then (function(data) {
         var songInfo = data.tracks.items[0];
         var artist = songInfo.artists[0].name;
@@ -75,20 +78,18 @@ function movieSearch(movie) {
 
 //////////////////////////////////// FS /////////////////////////////////////////
 
-
-//client.get("statuses/user_timeline", twitterParams, getTweets)
-
 function doWhatItSays() { //take text from txt file to determine which function to run
     fs.readFile("random.txt", "utf8", function(error, data) {
         var textArray = data.split(",");
         var fsCommand = textArray[0];
-        var searchTerm = textArray[1]; //json parse??
+        //var searchTerm = textArray[1]; //json parse??
         //console.log(fsCommand); //works
         if (fsCommand == "movie-this") {
-            movieSearch(searchTerm);
+            movieSearch(textArray[1]);
         }
         else if (fsCommand == "spotify-this-song") {
-            songSearch('track', searchTerm);
+            songSearch({ type: 'track', query: textArray[1] });
+//            songSearch(JSON.parse(textArray[1])); ////////////////////////
         }
         else if (fsCommand == "my-tweets") {
             client.get("statuses/user_timeline", twitterParams, getTweets);
@@ -99,14 +100,15 @@ function doWhatItSays() { //take text from txt file to determine which function 
 
 //////////////////////////////////// IF STATEMENTS /////////////////////////////////////////
 
-if (command == "do-what-it-says") {
-    doWhatItSays();
-} else if (command == "my-tweets") {
+
+if (command == "my-tweets") {
     client.get("statuses/user_timeline", twitterParams, getTweets);
 } else if (command == "movie-this") {
-    movieSearch(userSearch);
+    movieSearch(process.argv[3]);
 } else if (command == "spotify-this-song") {
-    songSearch('track', userSearch)
+    songSearch({ type: 'track', query: process.argv[3] })
+} else if (command == "do-what-it-says") {
+    doWhatItSays();
 }
 
 //SWITCH STATEMENTS SO THAT IT ONLY PROVIDES RESULTS FOR THE API YOU WANT!!!!!!!!!!!!!!
