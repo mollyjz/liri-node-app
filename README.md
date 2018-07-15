@@ -2,7 +2,7 @@
 
 Code: https://github.com/mollyjz/liri-node-app
 
-LIRI is a Language Interpretation and Recognition Interface. It is a multifunctional command-line node.js app that prints the user's latest tweets as well as information about a movie or song of their choice.
+LIRI is a Language Interpretation and Recognition Interface. It is a multifunctional command-line node.js app that prints the user's latest tweets as well as information about a movie or song of their choice. The user must enter `node liri` in the terminal line before each of the following commands.
 
 
 ## Twitter Functionality
